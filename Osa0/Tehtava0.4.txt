@@ -1,0 +1,57 @@
+kayttaja->selain:
+note left of selain
+  käyttäjä kirjoittaa tekstikenttaan jotain
+  ja painaa lähetä -nappia
+end note
+
+selain->palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note
+note left of palvelin
+  palvelin tallentaa lähetetyn muistiinpanon
+  ja ohjaa takaisin notes-sivulle
+end note
+palvelin->selain: status 302, ohjaa notes-sivulle
+
+note left of selain
+  selain pyytää notes-sivua
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/notes
+palvelin->selain: status 200
+
+note left of palvelin
+  notes-sivun sisältö saadaan onnistuneesti,
+  joten palautetaan 200 ja sivun sisältö
+end note
+
+note left of selain
+  haetaan tiedostot, joihin viitataan notes-sivulla
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200
+
+note left of palvelin
+  css-tiedoston sisältö saadaan onnistuneesti,
+  joten palautetaan 200 ja tiedoston sisältö
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/main.js
+palvelin->selain: status 200
+
+note left of palvelin
+  Javascript-tiedoston sisältö saadaan onnistuneesti,
+  joten palautetaan 200 ja tiedoston sisältö
+end note
+
+note left of selain
+  kun kaikki muu on ladattu, selain käynnistää Javascriptin,
+  pyydetään tarvittava data.json
+end note
+
+selain->palvelin: GET https://fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: status 200
+
+note left of palvelin
+  sisältö saadaan ladattua onnistuneesti, joten
+  palautetaan 200 ja uusi sisalto
+end note

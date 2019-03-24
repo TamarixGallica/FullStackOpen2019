@@ -1,0 +1,16 @@
+kayttaja->selain:
+note left of selain
+  käyttäjä kirjoittaa tekstikenttään jotain
+  ja painaa lähetä -nappia
+end note
+
+note left of selain
+ selain paivittaa nakyman ja
+ lahettaa tallennuspyynnon palvelimelle
+end note
+
+selain->palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note left of palvelin
+  palvelin tallentaa lähetetyn muistiinpanon
+end note
+palvelin->selain: status 201, tiedot on tallennettu onnistuneesti
