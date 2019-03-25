@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 
 const Header = ({message}) => <h1>{message}</h1>
 const Stat = ({label, count}) => <p>{label} {count}</p>
+const Average = ({label, average}) => <p>{label} {average} %</p>
 
 const App = () => {
     // tallenna napit omaan tilaansa
@@ -24,6 +25,9 @@ const App = () => {
         <Stat label="hyvä" count={good} />
         <Stat label="neutraali" count={neutral} />
         <Stat label="huono" count={bad} />
+        <Stat label="yhteensä" count={good + neutral + bad} />
+        <Stat label="keskiarvo" count={(good - bad) / (good + neutral + bad)} />
+        <Average label="positiivisia" average={good / (good + neutral + bad) * 100} />
     </div>
   )
 }
