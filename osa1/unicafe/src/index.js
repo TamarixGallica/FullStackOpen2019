@@ -2,8 +2,24 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const Header = ({message}) => <h1>{message}</h1>
-const Statistic = ({label, count}) => <p>{label} {count}</p>
-const Average = ({label, average}) => <p>{label} {average} %</p>
+const Statistic = ({label, count}) =>
+  <tr>
+    <td>
+      {label}
+    </td>
+    <td>
+      {count}
+    </td>
+  </tr>
+const Average = ({label, average}) => 
+  <tr>
+    <td>
+      {label}
+    </td>
+    <td>
+      {average} %
+    </td>
+  </tr>
 const Button = ({clickEvent, label}) => {
   return (
     <>
@@ -22,14 +38,17 @@ const Statistics = ({good, neutral, bad}) => {
   }
   
   return (
-    <>
+    <table>
+      <tbody>
+
     <Statistic label="hyvä" count={good} />
     <Statistic label="neutraali" count={neutral} />
     <Statistic label="huono" count={bad} />
     <Statistic label="yhteensä" count={good + neutral + bad} />
     <Statistic label="keskiarvo" count={(good - bad) / (good + neutral + bad)} />
     <Average label="positiivisia" average={good / (good + neutral + bad) * 100} />
-    </>
+      </tbody>
+    </table>
   )
 }
 
