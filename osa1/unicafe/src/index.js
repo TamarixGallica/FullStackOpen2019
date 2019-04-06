@@ -5,6 +5,15 @@ const Header = ({message}) => <h1>{message}</h1>
 const Stat = ({label, count}) => <p>{label} {count}</p>
 const Average = ({label, average}) => <p>{label} {average} %</p>
 const Statistics = ({good, neutral, bad}) => {
+  if (good === 0 && neutral === 0 && bad === 0)
+  {
+    return (
+      <>
+      Ei yhtään palautetta annettu
+      </>
+    )
+  }
+  
   return (
     <>
     <Stat label="hyvä" count={good} />
