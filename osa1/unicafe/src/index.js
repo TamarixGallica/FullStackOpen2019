@@ -2,8 +2,15 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 const Header = ({message}) => <h1>{message}</h1>
-const Stat = ({label, count}) => <p>{label} {count}</p>
+const Statistic = ({label, count}) => <p>{label} {count}</p>
 const Average = ({label, average}) => <p>{label} {average} %</p>
+const Button = ({clickEvent, label}) => {
+  return (
+    <>
+    <button onClick={clickEvent}>{label}</button>
+    </>
+  )
+}
 const Statistics = ({good, neutral, bad}) => {
   if (good === 0 && neutral === 0 && bad === 0)
   {
@@ -16,11 +23,11 @@ const Statistics = ({good, neutral, bad}) => {
   
   return (
     <>
-    <Stat label="hyvä" count={good} />
-    <Stat label="neutraali" count={neutral} />
-    <Stat label="huono" count={bad} />
-    <Stat label="yhteensä" count={good + neutral + bad} />
-    <Stat label="keskiarvo" count={(good - bad) / (good + neutral + bad)} />
+    <Statistic label="hyvä" count={good} />
+    <Statistic label="neutraali" count={neutral} />
+    <Statistic label="huono" count={bad} />
+    <Statistic label="yhteensä" count={good + neutral + bad} />
+    <Statistic label="keskiarvo" count={(good - bad) / (good + neutral + bad)} />
     <Average label="positiivisia" average={good / (good + neutral + bad) * 100} />
     </>
   )
@@ -39,9 +46,9 @@ const App = () => {
     return (
     <div>
         <Header message={"anna palautetta"} />
-        <button onClick={handleGoodClick}>hyvä</button>
-        <button onClick={handleNeutralClick}>neutraali</button>
-        <button onClick={handleBadClick}>huono</button>
+        <Button clickEvent={handleGoodClick} label="hyvä" />
+        <Button clickEvent={handleNeutralClick} label="neutraali" />
+        <Button clickEvent={handleBadClick} label="huono" />
         <Header message={"statistiikka"} />
         <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
