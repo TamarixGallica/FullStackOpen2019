@@ -1,8 +1,9 @@
 import React from 'react'
 
 const Total = (props) => {
-    let sum = 0;
-    props.parts.map(parts => sum+=parts.exercises);
+    const sum = props.parts.reduce((s, p) => {
+        return s+p.exercises
+    }, 0);
     return (
         <p>yhteensä {sum} tehtävää</p>
     )
