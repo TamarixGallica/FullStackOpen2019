@@ -11,18 +11,34 @@ const RandomNumber = ({length}) => {
     return Math.floor(Math.random() * length)
 }
 
+const HighestVotedAnecdote = (anecdotes) => {
+  const votes = anecdotes.map(x => x.votes);
+  const HighestVoted = Math.max.apply(null, votes);
+  return anecdotes[HighestVoted];
+}
+
+const Anecdote = ({anecdote}) => {
+
+  return (
+    <p>
+      {anecdote.anecdote}<br/>
+      has {anecdote.votes} votes
+    </p>
+  )
+}
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
   const voteSelected = useState(0)[1];
 
   return (
     <div>
-      <p>
-        {props.anecdotes[selected].anecdote}<br/>
-        has {props.anecdotes[selected].votes} votes
-      </p>
+      <h1>Anecdote of the day</h1>
+      <Anecdote anecdote={props.anecdotes[selected]} />
       <Button clickEvent={() => voteSelected(props.anecdotes[selected].votes += 1)} label="vote" />
       <Button clickEvent={() => setSelected(RandomNumber(anecdotes))} label="next anecdote" />
+      <h1>Anecdote with the most votes</h1>
+      <Anecdote anecdote={HighestVotedAnecdote(props.anecdotes)} />
     </div>
   )
 }
