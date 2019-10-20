@@ -14,6 +14,13 @@ const App = () => {
   
   const addName = (event) => {
     event.preventDefault();
+
+    if(persons.findIndex((person => person.name === newName))!==-1)
+    {
+      alert(`${newName} is already added to phonebook`)
+      return;
+    }
+
     const personObject = {
       "name": newName
     }
