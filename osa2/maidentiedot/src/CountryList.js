@@ -1,7 +1,7 @@
 import React from 'react';
 import Country from './Country';
 
-const CountryList = ({countries, filter, filterValueHandler}) => {
+const CountryList = ({countries, filter, filterValueHandler, capitalChangeHandler, weather}) => {
 
     const filteredCountries = countries.filter((country) => country.name.toUpperCase().includes(filter.toUpperCase()))
 
@@ -10,7 +10,8 @@ const CountryList = ({countries, filter, filterValueHandler}) => {
     }
 
     if(filteredCountries.length === 1) {
-        return (<Country country={filteredCountries[0]} />)
+        capitalChangeHandler(filteredCountries[0].capital)
+        return (<Country country={filteredCountries[0]} weather={weather} />)
     }
 
     return (
