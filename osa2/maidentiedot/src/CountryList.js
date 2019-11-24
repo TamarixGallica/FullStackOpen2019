@@ -1,7 +1,7 @@
 import React from 'react';
 import Country from './Country';
 
-const CountryList = ({countries, filter}) => {
+const CountryList = ({countries, filter, filterValueHandler}) => {
 
     const filteredCountries = countries.filter((country) => country.name.toUpperCase().includes(filter.toUpperCase()))
 
@@ -15,7 +15,12 @@ const CountryList = ({countries, filter}) => {
 
     return (
         <div>
-            {filteredCountries.map((country) => <span key={country.alpha3Code}>{country.name}<br/></span>)}
+            {filteredCountries.map((country) =>
+                <span key={country.alpha3Code}>
+                    {country.name}
+                    <input type="button" value="show" data-country-name={country.name} onClick={filterValueHandler}></input>
+                    <br/>
+                </span>)}
         </div>
     )
 }

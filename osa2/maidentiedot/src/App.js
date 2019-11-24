@@ -21,6 +21,10 @@ function App() {
     setFilter(e.target.value);
   }
 
+  const singleCountryFilterChangeHandler = (e) => {
+    setFilter(e.target.attributes['data-country-name'].value);
+  }
+
   return (
     <div className="App">
       <Filter
@@ -30,6 +34,7 @@ function App() {
       <CountryList
         countries={countries}
         filter={filter}
+        filterValueHandler={singleCountryFilterChangeHandler}
       />
     </div>
   );
