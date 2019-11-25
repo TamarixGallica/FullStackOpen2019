@@ -34,11 +34,27 @@ const App = () => {
     }
 
     personService.create(personObject)
-      .then(() => {
-        setPersons(persons.concat(personObject));
+      .then((response) => {
+        setPersons(persons.concat(response.data));
         setNewName('');
         setNewNumber('');
       })
+  }
+
+  const removeName = (event) => {
+    event.preventDefault();
+
+    const id = event.target.attributes['data-person-id'].value
+
+    const confirmed = window.confirm(`Delete ${persons.filter(person => person.id.toString() === id)[0].name}?`)
+
+    if(confirmed) {
+      personService.remove(id)
+      .then(() => {
+        const newPersons = persons.filter(person => person.id.toString() !== id)
+        setPersons(newPersons)
+      })
+    }
   }
 
   const handleFilterChange = (event) => {
@@ -51,6 +67,10 @@ const App = () => {
 
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value);
+  }
+
+  const handlePersonRemove = (event) => {
+    removeName(event)
   }
 
   return (
@@ -69,6 +89,7 @@ const App = () => {
       <Persons
         persons={persons}
         newFilter={newFilter}
+        personRemoveHandler={handlePersonRemove}
       />
     </div>
   )
