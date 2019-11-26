@@ -19,14 +19,26 @@ const App = () => {
 
   useEffect(hook, [])
 
-  const addName = (event) => {
+  const addOrUpdateName = (event) => {
     event.preventDefault();
 
-    if(persons.findIndex((person => person.name === newName))!==-1)
+    const personIndex = persons.findIndex((person => person.name === newName))
+
+    console.log(personIndex)
+
+    if(personIndex !== -1)
     {
-      alert(`${newName} is already added to phonebook`)
-      return;
+      if(window.confirm(`${persons[personIndex].name} is already added to phonebook, replace the old number with a new one?`)) {
+        replaceNumber(persons[personIndex].id, personIndex)
+      }
     }
+    else {
+      AddName();
+    }
+
+  }
+  
+  const AddName = () => {
 
     const personObject = {
       "name": newName,
@@ -38,6 +50,21 @@ const App = () => {
         setPersons(persons.concat(response.data));
         setNewName('');
         setNewNumber('');
+      })
+  }
+
+  const replaceNumber = (id, index) => {
+    console.log(`Would replace a number with id ${id}`)
+    const personObject = {
+      "name": newName,
+      "number": newNumber
+    }
+
+    personService.update(id, personObject)
+      .then(() => {
+        setNewName('')
+        setNewNumber('')
+        hook();
       })
   }
 
@@ -79,7 +106,7 @@ const App = () => {
       <Filter changeHandler={handleFilterChange} value={newFilter} />
       <h2>add a new</h2>
       <PersonForm
-        addNameHandler={addName}
+        addNameHandler={addOrUpdateName}
         handleNameChangeHandler={handleNameChange}
         name={newName}
         handleNumberChangeHandler={handleNumberChange}
