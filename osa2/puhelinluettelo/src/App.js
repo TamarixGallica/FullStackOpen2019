@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import StatusMessage from './StatusMessage'
 import Filter from './Filter'
 import PersonForm from './PersonForm'
 import Persons from './Persons'
@@ -9,6 +10,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
   const [ newFilter, setNewFilter] = useState('')
+  const [message, setMessage] = useState('')
   
   const hook = () => {
     personService.getall()
@@ -24,8 +26,6 @@ const App = () => {
 
     const personIndex = persons.findIndex((person => person.name === newName))
 
-    console.log(personIndex)
-
     if(personIndex !== -1)
     {
       if(window.confirm(`${persons[personIndex].name} is already added to phonebook, replace the old number with a new one?`)) {
@@ -38,6 +38,13 @@ const App = () => {
 
   }
   
+  const showMessage = (message, timeout) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage('')
+    }, timeout);
+  };
+
   const AddName = () => {
 
     const personObject = {
@@ -48,6 +55,7 @@ const App = () => {
     personService.create(personObject)
       .then((response) => {
         setPersons(persons.concat(response.data));
+        showMessage(`Added ${newName}`, 3000)
         setNewName('');
         setNewNumber('');
       })
@@ -62,6 +70,7 @@ const App = () => {
 
     personService.update(id, personObject)
       .then(() => {
+        showMessage(`Updated ${newName}`, 3000)
         setNewName('')
         setNewNumber('')
         hook();
@@ -76,10 +85,11 @@ const App = () => {
     const confirmed = window.confirm(`Delete ${persons.filter(person => person.id.toString() === id)[0].name}?`)
 
     if(confirmed) {
+      const removedPerson = persons.filter(person => person.id.toString() === id)[0]
       personService.remove(id)
       .then(() => {
-        const newPersons = persons.filter(person => person.id.toString() !== id)
-        setPersons(newPersons)
+        showMessage(`Deleted ${removedPerson.name}`, 3000)
+        hook()
       })
     }
   }
@@ -103,6 +113,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <StatusMessage message={message} />
       <Filter changeHandler={handleFilterChange} value={newFilter} />
       <h2>add a new</h2>
       <PersonForm
