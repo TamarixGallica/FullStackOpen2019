@@ -10,7 +10,10 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
   const [ newFilter, setNewFilter] = useState('')
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState({
+    message: '',
+    messageType: ''
+  })
   
   const hook = () => {
     personService.getall()
@@ -38,10 +41,16 @@ const App = () => {
 
   }
   
-  const showMessage = (message, timeout) => {
-    setMessage(message)
+  const showMessage = (message, messageType, timeout) => {
+    setMessage({
+      message: message,
+      messageType: messageType
+    })
     setTimeout(() => {
-      setMessage('')
+      setMessage({
+        message: '',
+        messageType: ''
+      })
     }, timeout);
   };
 
@@ -55,7 +64,7 @@ const App = () => {
     personService.create(personObject)
       .then((response) => {
         setPersons(persons.concat(response.data));
-        showMessage(`Added ${newName}`, 3000)
+        showMessage(`Added ${newName}`, 'ok', 3000)
         setNewName('');
         setNewNumber('');
       })
@@ -70,7 +79,12 @@ const App = () => {
 
     personService.update(id, personObject)
       .then(() => {
-        showMessage(`Updated ${newName}`, 3000)
+        showMessage(`Updated ${newName}`, 'ok', 3000)
+      })
+      .catch(() => {
+        showMessage(`Information of ${newName} has already been removed from server`, 'error', 3000);
+      })
+      .finally(() => {
         setNewName('')
         setNewNumber('')
         hook();
@@ -88,8 +102,12 @@ const App = () => {
       const removedPerson = persons.filter(person => person.id.toString() === id)[0]
       personService.remove(id)
       .then(() => {
-        showMessage(`Deleted ${removedPerson.name}`, 3000)
+        showMessage(`Deleted ${removedPerson.name}`, 'ok', 3000)
         hook()
+      })
+      .catch(() => {
+        showMessage(`Information of ${newName} has already been removed from server`, 'error', 3000);
+        hook();
       })
     }
   }
@@ -113,7 +131,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <StatusMessage message={message} />
+      <StatusMessage message={message.message} messageType={message.messageType} />
       <Filter changeHandler={handleFilterChange} value={newFilter} />
       <h2>add a new</h2>
       <PersonForm
