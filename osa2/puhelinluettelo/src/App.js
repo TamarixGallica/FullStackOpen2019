@@ -106,7 +106,7 @@ const App = () => {
         hook()
       })
       .catch(() => {
-        showMessage(`Information of ${newName} has already been removed from server`, 'error', 3000);
+        showMessage(`Information of ${removedPerson.name} has already been removed from server`, 'error', 3000);
         hook();
       })
     }
