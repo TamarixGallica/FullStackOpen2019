@@ -25,7 +25,7 @@ const App = () => {
   useEffect(hook, [])
 
   const addOrUpdateName = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const personIndex = persons.findIndex((person => person.name === newName))
 
@@ -36,7 +36,7 @@ const App = () => {
       }
     }
     else {
-      AddName();
+      AddName()
     }
 
   }
@@ -51,33 +51,32 @@ const App = () => {
         message: '',
         messageType: ''
       })
-    }, timeout);
-  };
+    }, timeout)
+  }
 
   const AddName = () => {
 
     const personObject = {
-      "name": newName,
-      "number": newNumber
+      'name': newName,
+      'number': newNumber
     }
 
     personService.create(personObject)
       .then((response) => {
-        setPersons(persons.concat(response.data));
+        setPersons(persons.concat(response.data))
         showMessage(`Added ${newName}`, 'ok', 3000)
-        setNewName('');
-        setNewNumber('');
+        setNewName('')
+        setNewNumber('')
       })
       .catch((error) => {
         showMessage(error.response.data.error, 'error', 3000)
       })
   }
 
-  const replaceNumber = (id, index) => {
-    console.log(`Would replace a number with id ${id}`)
+  const replaceNumber = (id) => {
     const personObject = {
-      "name": newName,
-      "number": newNumber
+      'name': newName,
+      'number': newNumber
     }
 
     personService.update(id, personObject)
@@ -85,17 +84,17 @@ const App = () => {
         showMessage(`Updated ${newName}`, 'ok', 3000)
       })
       .catch(() => {
-        showMessage(`Information of ${newName} has already been removed from server`, 'error', 3000);
+        showMessage(`Information of ${newName} has already been removed from server`, 'error', 3000)
       })
       .finally(() => {
         setNewName('')
         setNewNumber('')
-        hook();
+        hook()
       })
   }
 
   const removeName = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const id = event.target.attributes['data-person-id'].value
 
@@ -104,27 +103,27 @@ const App = () => {
     if(confirmed) {
       const removedPerson = persons.filter(person => person.id.toString() === id)[0]
       personService.remove(id)
-      .then(() => {
-        showMessage(`Deleted ${removedPerson.name}`, 'ok', 3000)
-        hook()
-      })
-      .catch(() => {
-        showMessage(`Information of ${removedPerson.name} has already been removed from server`, 'error', 3000);
-        hook();
-      })
+        .then(() => {
+          showMessage(`Deleted ${removedPerson.name}`, 'ok', 3000)
+          hook()
+        })
+        .catch(() => {
+          showMessage(`Information of ${removedPerson.name} has already been removed from server`, 'error', 3000)
+          hook()
+        })
     }
   }
 
   const handleFilterChange = (event) => {
-    setNewFilter(event.target.value);
+    setNewFilter(event.target.value)
   }
 
   const handleNameChange = (event) => {
-    setNewName(event.target.value);
+    setNewName(event.target.value)
   }
 
   const handleNumberChange = (event) => {
-    setNewNumber(event.target.value);
+    setNewNumber(event.target.value)
   }
 
   const handlePersonRemove = (event) => {
