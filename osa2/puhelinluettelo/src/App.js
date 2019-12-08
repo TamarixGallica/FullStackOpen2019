@@ -68,6 +68,9 @@ const App = () => {
         setNewName('');
         setNewNumber('');
       })
+      .catch((error) => {
+        showMessage(error.response.data.error, 'error', 3000)
+      })
   }
 
   const replaceNumber = (id, index) => {
