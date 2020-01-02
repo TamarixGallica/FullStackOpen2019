@@ -1,5 +1,5 @@
 import React from 'react'
-import ErrorMessage from './ErrorMessage'
+import ToastMessage from './ToastMessage'
 
 const LoginForm = ({ username, usernameHandler, password, passwordHandler, loginHandler, errorMessage }) => {
   return (
@@ -11,7 +11,7 @@ const LoginForm = ({ username, usernameHandler, password, passwordHandler, login
           password <input type="password" value={password} onChange={passwordHandler} /><br />
           <input type="submit" value="Login" onClick={loginHandler} />
         </p>
-        { errorMessage && <ErrorMessage message={errorMessage} />}
+        { errorMessage.message && <ToastMessage type={errorMessage.type} message={errorMessage.message} />}
       </form>
     </div>
   )

@@ -13,7 +13,10 @@ function App() {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [statusMessage, setStatusMessage] = useState({
+    type: '',
+    message: ''
+  })
 
   const usernameHandler = (e) => setUsername(e.target.value)
   const passwordHandler = (e) => setPassword(e.target.value)
@@ -28,6 +31,19 @@ function App() {
       })
   }
 
+  const displayMessage = (type, message) => {
+    setStatusMessage({
+      type: type,
+      message: message
+    })
+    setTimeout(() => {
+      setStatusMessage({
+        type: '',
+        message: ''
+      })
+    }, 3000)
+  }
+
   const loginHandler = async (event) => {
     event.preventDefault();
     try {
@@ -38,10 +54,7 @@ function App() {
       setUsername('')
       setPassword('')
     } catch (ex) {
-      setErrorMessage('Login failed due to invalid credentials')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 3000)
+      displayMessage('error', 'Login failed due to invalid credentials')
     }
   }
 
@@ -59,8 +72,9 @@ function App() {
       setTitle('')
       setAuthor('')
       setUrl('')
+      displayMessage('success', `Blog ${blog.title} by ${blog.author} was successfully added`)
     } catch (ex) {
-      console.log(ex)
+      displayMessage('error', 'Blog couldn\'t be created because an error occured')
     }
 
   }
@@ -85,7 +99,7 @@ function App() {
           password={password}
           passwordHandler={passwordHandler}
           loginHandler={loginHandler}
-          errorMessage={errorMessage}
+          errorMessage={statusMessage}
         />
         : <div>
           <BlogCreation
@@ -96,6 +110,7 @@ function App() {
             url={url}
             urlHandler={urlHandler}
             submitHandler={blogCreateHandler}
+            statusMessage={statusMessage}
           />
           <BlogList
             username={user.username}
