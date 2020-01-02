@@ -25,6 +25,7 @@ function App() {
     event.preventDefault();
     try {
       const user = await loginService.login({ username, password })
+      window.localStorage.setItem('loggedUser', JSON.stringify(user))
       setUser(user)
       setUsername('')
       setPassword('')
@@ -36,7 +37,21 @@ function App() {
     }
   }
 
+  const logoutHandler = (event) => {
+    event.preventDefault();
+    window.localStorage.removeItem('loggedUser')
+    setUser(null)
+  }
+
   useEffect(hook, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedUser');
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+    }    
+  }, [])
 
   return (
     <div className="App">
@@ -52,6 +67,7 @@ function App() {
         : <BlogList
             username={user.username}
             blogs={blogs}
+            logoutHandler={logoutHandler}
           />
         }
     </div>
