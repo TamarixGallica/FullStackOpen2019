@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import _ from 'lodash'
 import BlogList from './components/BlogList'
 import BlogCreation from './components/BlogCreation'
 import LoginForm from './components/LoginForm'
@@ -146,7 +147,7 @@ function App() {
           </Togglable>
           <BlogList
             username={user.username}
-            blogs={blogs}
+            blogs={_.orderBy(blogs, ['likes'], ['desc'])}
             logoutHandler={logoutHandler}
             blogLikeHandler={blogLikeHandler}
           />
