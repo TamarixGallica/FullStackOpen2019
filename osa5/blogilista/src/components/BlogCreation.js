@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import ToastMessage from './ToastMessage'
 
 const BlogCreation = ({ title, titleHandler, author, authorHandler, url, urlHandler, submitHandler, statusMessage }) => {
@@ -16,6 +17,17 @@ const BlogCreation = ({ title, titleHandler, author, authorHandler, url, urlHand
       </form>
     </div>
   )
+}
+
+BlogCreation.propTypes = {
+  title: PropTypes.string.isRequired,
+  titleHandler: PropTypes.func.isRequired,
+  author: PropTypes.string.isRequired,
+  authorHandler: PropTypes.func.isRequired,
+  url: PropTypes.string.isRequired,
+  urlHandler: PropTypes.func.isRequired,
+  submitHandler: PropTypes.func.isRequired,
+  statusMessage: PropTypes.object
 }
 
 export default BlogCreation

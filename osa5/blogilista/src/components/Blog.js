@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+
 const Blog = ({ username, blog, blogLikeHandler, blogDeleteHandler }) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
   const toggleDetailsVisible = () => setDetailsVisible(!detailsVisible)
@@ -23,6 +25,13 @@ const Blog = ({ username, blog, blogLikeHandler, blogDeleteHandler }) => {
       }
     </div>
   )
+}
+
+Blog.propTypes = {
+  username: PropTypes.string.isRequired,
+  blog: PropTypes.object.isRequired,
+  blogLikeHandler: PropTypes.func.isRequired,
+  blogDeleteHandler: PropTypes.func.isRequired
 }
 
 export default Blog
