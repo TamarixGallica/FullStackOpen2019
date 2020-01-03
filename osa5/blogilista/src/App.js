@@ -105,6 +105,21 @@ function App() {
     }
   }
 
+  const blogDeleteHandler = async (event) => {
+    event.preventDefault()
+    try {
+      const blogId = event.target.getAttribute("data-blog-id")
+      const blog = blogs.find(blog => blog.id === blogId)
+
+      if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
+        await blogService.deleteBlog(blogId)
+        setBlogs(blogs.filter(blog => blog.id !== blogId))
+      }
+    } catch (ex) {
+      console.log(ex)
+    }
+  }
+
   useEffect(hook, [])
 
   useEffect(() => {
@@ -150,6 +165,7 @@ function App() {
             blogs={_.orderBy(blogs, ['likes'], ['desc'])}
             logoutHandler={logoutHandler}
             blogLikeHandler={blogLikeHandler}
+            blogDeleteHandler={blogDeleteHandler}
           />
         </div>
       }

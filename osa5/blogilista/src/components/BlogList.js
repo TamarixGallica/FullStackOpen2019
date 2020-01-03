@@ -1,10 +1,10 @@
 import React from 'react'
 import Blog from './Blog'
 
-const BlogList = ({ blogs, blogLikeHandler }) => {
+const BlogList = ({ blogs, blogLikeHandler, blogDeleteHandler }) => {
   return <div>
     <div>
-      {blogs.map(blog => <Blog blog={blog} blogLikeHandler={blogLikeHandler} key={blog.id} />)}
+      {blogs.map(blog => <Blog blog={blog} blogLikeHandler={blogLikeHandler} blogDeleteHandler={blogDeleteHandler} key={blog.id} />)}
     </div>
   </div>
 }

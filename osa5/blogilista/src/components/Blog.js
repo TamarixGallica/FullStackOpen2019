@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-const Blog = ({ blog, blogLikeHandler }) => {
+const Blog = ({ blog, blogLikeHandler, blogDeleteHandler }) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
   const toggleDetailsVisible = () => setDetailsVisible(!detailsVisible)
   const style = {
@@ -15,6 +15,7 @@ const Blog = ({ blog, blogLikeHandler }) => {
           <p><a href={blog.url}>{blog.url}</a></p>
           <p>{blog.likes} likes <input type="button" value="Like" data-blog-id={blog.id} onClick={blogLikeHandler}/></p>
           <p>Added by {blog.user.username}</p>
+          <p><input type="button" value="Remove" data-blog-id={blog.id} onClick={blogDeleteHandler}/></p>
         </>
       }
     </div>
