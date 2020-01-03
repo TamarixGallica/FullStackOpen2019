@@ -78,7 +78,30 @@ function App() {
     } catch (ex) {
       displayMessage('error', 'Blog couldn\'t be created because an error occured')
     }
+  }
 
+  const blogLikeHandler = async (event) => {
+    event.preventDefault()
+    try {
+      const blogId = event.target.getAttribute("data-blog-id")
+      const blogIndex = blogs.findIndex(blog => blog.id === blogId)
+      const blog = blogs[blogIndex]
+
+      const requestBlog = {
+        user: blog.user.id,
+        likes: blog.likes + 1,
+        author: blog.author,
+        title: blog.title,
+        url: blog.url
+      }
+
+      const response = await blogService.likeBlog(blog.id, requestBlog)
+      const updatedBlogs = blogs.slice(0)
+      updatedBlogs[blogIndex].likes = response.likes
+      setBlogs(updatedBlogs)
+    } catch (ex) {
+      console.log(ex)
+    }
   }
 
   useEffect(hook, [])
@@ -125,6 +148,7 @@ function App() {
             username={user.username}
             blogs={blogs}
             logoutHandler={logoutHandler}
+            blogLikeHandler={blogLikeHandler}
           />
         </div>
       }
