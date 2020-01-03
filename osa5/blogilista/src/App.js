@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import BlogList from './components/BlogList'
 import BlogCreation from './components/BlogCreation'
 import LoginForm from './components/LoginForm'
+import UserInfo from './components/UserInfo'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -102,16 +104,23 @@ function App() {
           errorMessage={statusMessage}
         />
         : <div>
-          <BlogCreation
-            author={author}
-            authorHandler={authorHandler}
-            title={title}
-            titleHandler={titleHandler}
-            url={url}
-            urlHandler={urlHandler}
-            submitHandler={blogCreateHandler}
-            statusMessage={statusMessage}
+          <h1>Blogs</h1>
+          <UserInfo
+            username={user.username}
+            logoutHandler={logoutHandler}
           />
+          <Togglable buttonlabel="Add a blog">
+            <BlogCreation
+              author={author}
+              authorHandler={authorHandler}
+              title={title}
+              titleHandler={titleHandler}
+              url={url}
+              urlHandler={urlHandler}
+              submitHandler={blogCreateHandler}
+              statusMessage={statusMessage}
+            />
+          </Togglable>
           <BlogList
             username={user.username}
             blogs={blogs}
