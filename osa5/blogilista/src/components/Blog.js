@@ -5,8 +5,8 @@ const Blog = ({ username, blog, blogLikeHandler, blogDeleteHandler }) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
   const toggleDetailsVisible = () => setDetailsVisible(!detailsVisible)
   const style = {
-    border: "1px solid black",
-    padding: "0px 3px"
+    border: '1px solid black',
+    padding: '0px 3px'
   }
 
   return (

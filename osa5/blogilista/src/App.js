@@ -48,7 +48,7 @@ function App() {
   }
 
   const loginHandler = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
@@ -62,7 +62,7 @@ function App() {
   }
 
   const logoutHandler = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     window.localStorage.removeItem('loggedUser')
     setUser(null)
   }
@@ -84,7 +84,7 @@ function App() {
   const blogLikeHandler = async (event) => {
     event.preventDefault()
     try {
-      const blogId = event.target.getAttribute("data-blog-id")
+      const blogId = event.target.getAttribute('data-blog-id')
       const blogIndex = blogs.findIndex(blog => blog.id === blogId)
       const blog = blogs[blogIndex]
 
@@ -108,7 +108,7 @@ function App() {
   const blogDeleteHandler = async (event) => {
     event.preventDefault()
     try {
-      const blogId = event.target.getAttribute("data-blog-id")
+      const blogId = event.target.getAttribute('data-blog-id')
       const blog = blogs.find(blog => blog.id === blogId)
 
       if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
@@ -123,12 +123,12 @@ function App() {
   useEffect(hook, [])
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedUser');
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
-    }    
+    }
   }, [])
 
   return (
@@ -170,7 +170,7 @@ function App() {
         </div>
       }
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
