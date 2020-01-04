@@ -3,14 +3,20 @@ import PropTypes from 'prop-types'
 import ToastMessage from './ToastMessage'
 
 const BlogCreation = ({ title, author, url, submitHandler, statusMessage }) => {
+  // eslint-disable-next-line no-unused-vars
+  const { reset: r1, ...newTitle } = title
+  // eslint-disable-next-line no-unused-vars
+  const { reset: r2, ...newAuthor } = author
+  // eslint-disable-next-line no-unused-vars
+  const { reset: r3, ...newUrl } = url
   return (
     <div>
       <h2>Create new</h2>
       <form>
         <p>
-          title: <input {...title} /><br />
-          author: <input {...author} /><br />
-          url: <input {...url} /><br />
+          title: <input {...newTitle} /><br />
+          author: <input {...newAuthor} /><br />
+          url: <input {...newUrl} /><br />
           <input type="submit" value="Create" onClick={submitHandler} />
         </p>
         { statusMessage.message && <ToastMessage type={statusMessage.type} message={statusMessage.message} /> }
