@@ -7,25 +7,20 @@ import UserInfo from './components/UserInfo'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { useField } from './hooks'
 
 function App() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('password')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
   const [statusMessage, setStatusMessage] = useState({
     type: '',
     message: ''
   })
-
-  const usernameHandler = (e) => setUsername(e.target.value)
-  const passwordHandler = (e) => setPassword(e.target.value)
-  const authorHandler = (e) => setAuthor(e.target.value)
-  const titleHandler = (e) => setTitle(e.target.value)
-  const urlHandler = (e) => setUrl(e.target.value)
 
   const hook = () => {
     blogService.getAll()
@@ -50,12 +45,12 @@ function App() {
   const loginHandler = async (event) => {
     event.preventDefault()
     try {
-      const user = await loginService.login({ username, password })
+      const user = await loginService.login({ username: username.value, password: password.value })
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       setUser(user)
       blogService.setToken(user.token)
-      setUsername('')
-      setPassword('')
+      username.reset()
+      username.reset()
     } catch (ex) {
       displayMessage('error', 'Login failed due to invalid credentials')
     }
@@ -70,11 +65,11 @@ function App() {
   const blogCreateHandler = async (event) => {
     event.preventDefault()
     try {
-      const blog = await blogService.addBlog({ title, author, url })
+      const blog = await blogService.addBlog({ title: title.value, author: author.value, url: url.value })
       setBlogs(blogs.concat(blog))
-      setTitle('')
-      setAuthor('')
-      setUrl('')
+      title.reset()
+      author.reset()
+      url.reset()
       displayMessage('success', `Blog ${blog.title} by ${blog.author} was successfully added`)
     } catch (ex) {
       displayMessage('error', 'Blog couldn\'t be created because an error occured')
@@ -136,9 +131,7 @@ function App() {
       {user === null ?
         <LoginForm
           username={username}
-          usernameHandler={usernameHandler}
           password={password}
-          passwordHandler={passwordHandler}
           loginHandler={loginHandler}
           errorMessage={statusMessage}
         />
@@ -151,11 +144,8 @@ function App() {
           <Togglable buttonlabel="Add a blog">
             <BlogCreation
               author={author}
-              authorHandler={authorHandler}
               title={title}
-              titleHandler={titleHandler}
               url={url}
-              urlHandler={urlHandler}
               submitHandler={blogCreateHandler}
               statusMessage={statusMessage}
             />
