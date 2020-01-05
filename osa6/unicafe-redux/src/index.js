@@ -30,6 +30,25 @@ const App = () => {
     })
   }
 
+  const count = () =>
+    store.getState().good + store.getState().ok + store.getState().bad
+
+  const average = () => {
+    if (count() === 0) {
+      return 0
+    }
+
+    return (store.getState().good - store.getState().bad) / count()
+  }
+
+  const positivePercentage = () => {
+    if (count() === 0) {
+      return 0
+    }
+
+    return store.getState().good / count() * 100
+  }
+
   return (
     <div>
       <button onClick={good}>hyvä</button> 
@@ -39,6 +58,9 @@ const App = () => {
       <div>hyvä {store.getState().good}</div>
       <div>neutraali {store.getState().ok}</div>
       <div>huono {store.getState().bad}</div>
+      <div>yhteensä {count()}</div>
+      <div>keskiarvo {average()}</div>
+      <div>positiivisia {positivePercentage()} %</div>
     </div>
   )
 }
