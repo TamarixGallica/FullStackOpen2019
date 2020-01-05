@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash'
+import { createAnecdote } from './reducers/anecdoteReducer'
 
 const App = ({ store }) => {
   const anecdotes = _.orderBy(store.getState(), ['votes'], ['desc'])
@@ -16,12 +17,7 @@ const App = ({ store }) => {
   const add = (event) => {
     event.preventDefault()
     const anecdote = event.target.anecdote.value
-    store.dispatch({
-      type: 'add',
-      data: {
-        anecdote
-      }
-    })
+    store.dispatch(createAnecdote(anecdote))
     event.target.anecdote.value = ''
   }
 
