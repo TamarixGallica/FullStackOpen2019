@@ -1,7 +1,8 @@
 import React from 'react';
+import _ from 'lodash'
 
 const App = ({ store }) => {
-  const anecdotes = store.getState()
+  const anecdotes = _.orderBy(store.getState(), ['votes'], ['desc'])
 
   const vote = (id) => {
     store.dispatch({
