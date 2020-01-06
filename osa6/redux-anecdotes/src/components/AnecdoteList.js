@@ -6,6 +6,7 @@ import { resetNotification } from '../reducers/notificationReducer'
 const AnecdoteList = ({ store }) => {
 
     const anecdotes = _.orderBy(store.getState().anecdotes, ['votes'], ['desc'])
+        .filter(x => x.content.includes(store.getState().filter))
 
     const vote = (anecdote) => {
         store.dispatch(voteAnecdote(anecdote))
