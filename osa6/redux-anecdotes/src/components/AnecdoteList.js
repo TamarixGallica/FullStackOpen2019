@@ -1,16 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import _ from 'lodash'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { resetNotification } from '../reducers/notificationReducer'
 
-const AnecdoteList = ({ store }) => {
+const AnecdoteList = (props) => {
 
-    const anecdotes = _.orderBy(store.getState().anecdotes, ['votes'], ['desc'])
-        .filter(x => x.content.includes(store.getState().filter))
+    const anecdotes = _.orderBy(props.anecdotes, ['votes'], ['desc'])
+        .filter(x => x.content.includes(props.filter))
 
     const vote = (anecdote) => {
-        store.dispatch(voteAnecdote(anecdote))
-        setTimeout(() => store.dispatch(resetNotification()), 5000)
+        // store.dispatch(voteAnecdote(anecdote))
+        // setTimeout(() => store.dispatch(resetNotification()), 5000)
     }
 
 
@@ -31,4 +32,12 @@ const AnecdoteList = ({ store }) => {
     )
 }
 
-export default AnecdoteList
+const mapStateToProps = (state) => {
+    return {
+        anecdotes: state.anecdotes,
+        filter: state.filter
+    }
+}
+
+const connectedAnecdoteList = connect(mapStateToProps)(AnecdoteList)
+export default connectedAnecdoteList
