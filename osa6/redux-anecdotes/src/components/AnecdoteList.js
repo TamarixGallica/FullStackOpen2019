@@ -3,7 +3,7 @@ import _ from 'lodash'
 
 const AnecdoteList = ({ store }) => {
 
-    const anecdotes = _.orderBy(store.getState(), ['votes'], ['desc'])
+    const anecdotes = _.orderBy(store.getState().anecdotes, ['votes'], ['desc'])
 
     const vote = (id) => {
         store.dispatch({
