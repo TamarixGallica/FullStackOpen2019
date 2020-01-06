@@ -1,12 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
 
-const AnecdoteForm = ({ store }) => {
+const AnecdoteForm = (props) => {
 
     const add = (event) => {
         event.preventDefault()
         const anecdote = event.target.anecdote.value
-        store.dispatch(createAnecdote(anecdote))
+        props.createAnecdote(anecdote)
         event.target.anecdote.value = ''
       }
     
@@ -22,4 +23,9 @@ const AnecdoteForm = ({ store }) => {
     )
 }
 
-export default AnecdoteForm
+const mapDispatchToProps = {
+    createAnecdote
+}
+
+const connectedAnecdoteForm = connect(null, mapDispatchToProps)(AnecdoteForm)
+export default connectedAnecdoteForm

@@ -11,7 +11,7 @@ const App = ({ store }) => {
       <Filter store={store} />
       {/* <Notification store={store} /> */}
       <AnecdoteList store={store} />
-      {/* <AnecdoteForm store={store} /> */}
+      <AnecdoteForm store={store} />
     </div>
   )
 }
