@@ -1,17 +1,15 @@
 import React from 'react';
 import _ from 'lodash'
+import { voteAnecdote } from '../reducers/anecdoteReducer'
+import { resetNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = ({ store }) => {
 
     const anecdotes = _.orderBy(store.getState().anecdotes, ['votes'], ['desc'])
 
-    const vote = (id) => {
-        store.dispatch({
-            type: 'vote',
-            data: {
-                id
-            }
-        })
+    const vote = (anecdote) => {
+        store.dispatch(voteAnecdote(anecdote))
+        setTimeout(() => store.dispatch(resetNotification()), 5000)
     }
 
 
@@ -24,7 +22,7 @@ const AnecdoteList = ({ store }) => {
                     </div>
                     <div>
                         has {anecdote.votes}
-                        <button onClick={() => vote(anecdote.id)}>vote</button>
+                        <button onClick={() => vote(anecdote)}>vote</button>
                     </div>
                 </div>
             )}
