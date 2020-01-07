@@ -8,7 +8,7 @@ const reducer = (state = '', action) => {
 
     switch(action.type) {
         case 'vote':
-            return action.data.anecdote.content
+            return `You voted '${action.data.anecdote.content}'`
         case 'set_notification':
             return action.data.message
         case 'reset_notification':

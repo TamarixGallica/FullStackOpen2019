@@ -8,8 +8,7 @@ const AnecdoteList = (props) => {
 
     const vote = (anecdote) => {
         anecdote.votes += 1
-        props.voteAnecdote(anecdote)
-        setTimeout(() => props.resetNotification(), 5000)
+        props.voteAnecdote(anecdote, 5)
     }
 
 

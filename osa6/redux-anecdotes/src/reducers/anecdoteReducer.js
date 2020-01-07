@@ -22,7 +22,7 @@ const createAnecdote = (content) => {
   }
 }
 
-const voteAnecdote = (content) => {
+const voteAnecdote = (content, delay) => {
   return async dispatch => {
     const anecdote = await anecdoteService.put(content)
     dispatch({
@@ -31,6 +31,11 @@ const voteAnecdote = (content) => {
         anecdote
       }
     })
+    setTimeout(() => {
+      dispatch({
+        type: 'reset_notification'
+      })
+    }, delay * 1000);
   }
 }
 
