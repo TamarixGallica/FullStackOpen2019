@@ -12,7 +12,7 @@ const createAnecdote = (content) => {
   return {
     type: 'add',
     data: {
-      anecdote: asObject(content)
+      anecdote: content
     }
   }
 }
@@ -54,4 +54,4 @@ const reducer = (state = [], action) => {
 }
 
 export default reducer
-export { createAnecdote, voteAnecdote, initializeAnecdotes }
+export { createAnecdote, voteAnecdote, initializeAnecdotes, asObject }
