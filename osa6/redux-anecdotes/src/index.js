@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom'
 import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import App from './App'
-import anecdoteReducer from './reducers/anecdoteReducer'
+import anecdoteService from './services/anecdotes'
+import anecdoteReducer, { initializeAnecdotes } from './reducers/anecdoteReducer'
 import notificationReducer from './reducers/notificationReducer'
 import filterReducer from './reducers/filterReducer'
 
@@ -16,6 +17,9 @@ const reducer = combineReducers({
 const store = createStore(
   reducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
+
+anecdoteService.getAll().then(anecdotes => store.dispatch(initializeAnecdotes(anecdotes))
 )
 
 const render = () => {
