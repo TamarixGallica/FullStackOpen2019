@@ -13,4 +13,9 @@ const post = async (anecdote) => {
   return response.data
 }
 
-export default { getAll, post }
+const put = async (anecdote) => {
+  const response = await axios.put(`${baseUrl}/${anecdote.id}`, anecdote)
+  return response.data
+}
+
+export default { getAll, post, put }
