@@ -10,8 +10,8 @@ const AnecdoteList = (props) => {
         .filter(x => x.content.includes(props.filter))
 
     const vote = (anecdote) => {
-        // store.dispatch(voteAnecdote(anecdote))
-        // setTimeout(() => store.dispatch(resetNotification()), 5000)
+        props.voteAnecdote(anecdote)
+        setTimeout(() => props.resetNotification(), 5000)
     }
 
 
@@ -39,5 +39,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-const connectedAnecdoteList = connect(mapStateToProps)(AnecdoteList)
+const mapDispatchToProps = {
+    voteAnecdote,
+    resetNotification
+}
+
+const connectedAnecdoteList = connect(mapStateToProps, mapDispatchToProps)(AnecdoteList)
 export default connectedAnecdoteList
