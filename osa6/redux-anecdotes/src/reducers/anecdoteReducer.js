@@ -11,11 +11,14 @@ const asObject = (anecdote) => {
 }
 
 const createAnecdote = (content) => {
-  return {
-    type: 'add',
-    data: {
-      anecdote: content
-    }
+  return async dispatch => {
+    const anecdote = await anecdoteService.post(content)
+    dispatch({
+      type: 'add',
+      data: {
+        anecdote
+      }
+    })
   }
 }
 
