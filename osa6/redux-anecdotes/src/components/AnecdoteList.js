@@ -6,9 +6,6 @@ import { resetNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = (props) => {
 
-    const anecdotes = _.orderBy(props.anecdotes, ['votes'], ['desc'])
-        .filter(x => x.content.includes(props.filter))
-
     const vote = (anecdote) => {
         props.voteAnecdote(anecdote)
         setTimeout(() => props.resetNotification(), 5000)
@@ -17,7 +14,7 @@ const AnecdoteList = (props) => {
 
     return (
         <>
-            {anecdotes.map(anecdote =>
+            {props.anecdotes.map(anecdote =>
                 <div key={anecdote.id}>
                     <div>
                         {anecdote.content}
@@ -32,10 +29,14 @@ const AnecdoteList = (props) => {
     )
 }
 
+const anecdotesToShow = ({ anecdotes, filter }) => {
+    return _.orderBy(anecdotes, ['votes'], ['desc'])
+        .filter(x => x.content.includes(filter))
+}
+
 const mapStateToProps = (state) => {
     return {
-        anecdotes: state.anecdotes,
-        filter: state.filter
+        anecdotes: anecdotesToShow(state)
     }
 }
 
