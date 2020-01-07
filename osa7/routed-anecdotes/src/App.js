@@ -17,11 +17,24 @@ const Menu = () => {
   )
 }
 
+const Anecdote = ({anecdote}) =>
+  <div>
+    <h2>{anecdote.content} by {anecdote.author}</h2>
+    <div>has {anecdote.votes} votes</div>
+    <div>for more information see <a href={anecdote.info}>{anecdote.info}</a></div>
+  </div>
+
 const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {
+        anecdotes.map(anecdote =>
+          <li key={anecdote.id} >
+            <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+          </li>
+        )
+      }
     </ul>
   </div>
 )
@@ -136,7 +149,10 @@ const App = () => {
       <Router>
         <h1>Software anecdotes</h1>
         <Menu />
-        <Route path="/anecdotes" render={() => <AnecdoteList anecdotes={anecdotes} /> } />
+        <Route exact path="/anecdotes" render={() => <AnecdoteList anecdotes={anecdotes} /> } />
+        <Route path="/anecdotes/:id" render={({ match }) => 
+          <Anecdote anecdote={anecdoteById(match.params.id)} />}
+        />
         <Route path="/about" render={() => <About /> } />
         <Route path="/create" render={() => <CreateNew addNew={addNew} /> } />
         <Footer />
