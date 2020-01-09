@@ -1,14 +1,20 @@
 import React from 'react'
-import { createStore } from 'redux'
+import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import { render, waitForElement } from '@testing-library/react'
 jest.mock('./services/blogs')
 import App from './App'
 import statusMessageReducer from './reducers/statusMessageReducer'
+import blogReducer from './reducers/blogReducer'
+
+const reducer = combineReducers({
+  statusMessage: statusMessageReducer,
+  blogs: blogReducer
+})
 
 const renderWithRedux = (
   app,
-  { initialState, store = createStore(statusMessageReducer, initialState) } = {}
+  { initialState, store = createStore(reducer, initialState) } = {}
 ) => {
   return {
     ...render(<Provider store={store}>{app}</Provider>),

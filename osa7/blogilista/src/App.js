@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import _ from 'lodash'
 import { connect } from 'react-redux'
 import BlogList from './components/BlogList'
 import BlogCreation from './components/BlogCreation'
@@ -10,12 +9,12 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import { useField } from './hooks'
 import { createStatusMessage } from './reducers/statusMessageReducer'
+import { createBlog, initializeBlogs, likeBlog, deleteBlog } from './reducers/blogReducer'
 
 function App(props) {
   const username = useField('text')
   const password = useField('password')
   const [user, setUser] = useState(null)
-  const [blogs, setBlogs] = useState([])
   const title = useField('text')
   const author = useField('text')
   const url = useField('text')
@@ -23,7 +22,7 @@ function App(props) {
   const hook = () => {
     blogService.getAll()
       .then(response => {
-        setBlogs(response)
+        props.initializeBlogs(response)
       })
   }
 
@@ -42,6 +41,7 @@ function App(props) {
       username.reset()
       username.reset()
     } catch (ex) {
+      console.log(ex)
       displayMessage('error', 'Login failed due to invalid credentials')
     }
   }
@@ -56,12 +56,13 @@ function App(props) {
     event.preventDefault()
     try {
       const blog = await blogService.addBlog({ title: title.value, author: author.value, url: url.value })
-      setBlogs(blogs.concat(blog))
+      props.createBlog(blog)
       title.reset()
       author.reset()
       url.reset()
       displayMessage('success', `Blog ${blog.title} by ${blog.author} was successfully added`)
     } catch (ex) {
+      console.log(ex)
       displayMessage('error', 'Blog couldn\'t be created because an error occured')
     }
   }
@@ -70,21 +71,13 @@ function App(props) {
     event.preventDefault()
     try {
       const blogId = event.target.getAttribute('data-blog-id')
-      const blogIndex = blogs.findIndex(blog => blog.id === blogId)
-      const blog = blogs[blogIndex]
+      const blogIndex = props.blogs.findIndex(blog => blog.id === blogId)
+      const blog = props.blogs[blogIndex]
 
-      const requestBlog = {
-        user: blog.user.id,
-        likes: blog.likes + 1,
-        author: blog.author,
-        title: blog.title,
-        url: blog.url
-      }
+      const requestBlog = { ...blog, likes: blog.likes + 1 }
 
       const response = await blogService.likeBlog(blog.id, requestBlog)
-      const updatedBlogs = blogs.slice(0)
-      updatedBlogs[blogIndex].likes = response.likes
-      setBlogs(updatedBlogs)
+      props.likeBlog(response)
     } catch (ex) {
       console.log(ex)
     }
@@ -94,11 +87,11 @@ function App(props) {
     event.preventDefault()
     try {
       const blogId = event.target.getAttribute('data-blog-id')
-      const blog = blogs.find(blog => blog.id === blogId)
+      const blog = props.blogs.find(blog => blog.id === blogId)
 
       if (window.confirm(`Remove ${blog.title} by ${blog.author}?`)) {
         await blogService.deleteBlog(blogId)
-        setBlogs(blogs.filter(blog => blog.id !== blogId))
+        props.deleteBlog(blog)
       }
     } catch (ex) {
       console.log(ex)
@@ -140,7 +133,6 @@ function App(props) {
           </Togglable>
           <BlogList
             username={user.username}
-            blogs={_.orderBy(blogs, ['likes'], ['desc'])}
             logoutHandler={logoutHandler}
             blogLikeHandler={blogLikeHandler}
             blogDeleteHandler={blogDeleteHandler}
@@ -151,9 +143,19 @@ function App(props) {
   )
 }
 
-const mapDispatchToProps = {
-  createStatusMessage
+const mapStateToProps = (state) => {
+  return {
+    blogs: state.blogs
+  }
 }
 
-const connectedApp = connect(null, mapDispatchToProps)(App)
+const mapDispatchToProps = {
+  createStatusMessage,
+  createBlog,
+  initializeBlogs,
+  likeBlog,
+  deleteBlog,
+}
+
+const connectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
 export default connectedApp

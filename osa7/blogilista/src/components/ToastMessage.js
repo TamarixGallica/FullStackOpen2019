@@ -19,8 +19,8 @@ const ToastMessage = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    type: state.type,
-    message: state.message
+    type: state.statusMessage.type,
+    message: state.statusMessage.message
   }
 }
 

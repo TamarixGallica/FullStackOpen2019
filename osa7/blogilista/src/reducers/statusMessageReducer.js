@@ -14,7 +14,6 @@ const createStatusMessage = (type, message) => {
 }
 
 const reducer = ( state = initialStatus, action) => {
-
   switch (action.type) {
   case 'set_statusmessage':
     return {
