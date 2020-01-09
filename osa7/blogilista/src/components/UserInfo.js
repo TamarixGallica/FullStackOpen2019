@@ -1,9 +1,17 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
-const UserInfo = ({ username, logoutHandler }) => {
+const UserInfo = (props) => {
   return (
-    <div>{username} logged in <input type="submit" value="logout" onClick={logoutHandler} /></div>
+    <div>{props.username} logged in <input type="submit" value="logout" onClick={props.logoutHandler} /></div>
   )
 }
 
-export default UserInfo
+const mapStateToProps = (state) => {
+  return {
+    username: state.user.username
+  }
+}
+
+const connectedUserInfo = connect(mapStateToProps)(UserInfo)
+export default connectedUserInfo

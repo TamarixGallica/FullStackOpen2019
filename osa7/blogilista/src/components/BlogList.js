@@ -13,7 +13,8 @@ const BlogList = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    blogs: _.orderBy(state.blogs, ['likes'], ['desc'])
+    blogs: _.orderBy(state.blogs, ['likes'], ['desc']),
+    username: state.user.username
   }
 }
 

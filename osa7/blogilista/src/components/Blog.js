@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
-const Blog = ({ username, blog, blogLikeHandler, blogDeleteHandler }) => {
+const Blog = (props) => {
   const [detailsVisible, setDetailsVisible] = useState(false)
   const toggleDetailsVisible = () => setDetailsVisible(!detailsVisible)
   const style = {
@@ -9,17 +9,19 @@ const Blog = ({ username, blog, blogLikeHandler, blogDeleteHandler }) => {
     padding: '0px 3px'
   }
 
+  const blog = props.blog
+
   return (
     <div style={style}>
       <p onClick={toggleDetailsVisible}>{blog.title} {blog.author}</p>
       { detailsVisible &&
         <>
-          <p><a href={blog.url}>{blog.url}</a></p>
-          <p>{blog.likes} likes <input type="button" value="Like" data-blog-id={blog.id} onClick={blogLikeHandler}/></p>
+          <p><a href={props.blog.url}>{blog.url}</a></p>
+          <p>{blog.likes} likes <input type="button" value="Like" data-blog-id={blog.id} onClick={props.blogLikeHandler}/></p>
           <p>Added by {blog.user.username}</p>
           {
-            username === blog.user.username &&
-            <p><input type="button" value="Remove" data-blog-id={blog.id} onClick={blogDeleteHandler}/></p>
+            props.username === blog.user.username &&
+            <p><input type="button" value="Remove" data-blog-id={blog.id} onClick={props.blogDeleteHandler}/></p>
           }
         </>
       }
@@ -27,11 +29,11 @@ const Blog = ({ username, blog, blogLikeHandler, blogDeleteHandler }) => {
   )
 }
 
-Blog.propTypes = {
-  username: PropTypes.string.isRequired,
-  blog: PropTypes.object.isRequired,
-  blogLikeHandler: PropTypes.func.isRequired,
-  blogDeleteHandler: PropTypes.func.isRequired
+const mapStateToProps = (state) => {
+  return {
+    username: state.user.username
+  }
 }
 
-export default Blog
+const connectedBlog = connect(mapStateToProps)(Blog)
+export default connectedBlog

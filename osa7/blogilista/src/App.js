@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import BlogList from './components/BlogList'
 import BlogCreation from './components/BlogCreation'
@@ -10,11 +10,11 @@ import loginService from './services/login'
 import { useField } from './hooks'
 import { createStatusMessage } from './reducers/statusMessageReducer'
 import { createBlog, initializeBlogs, likeBlog, deleteBlog } from './reducers/blogReducer'
+import { setUser, resetUser } from './reducers/userReducer'
 
 function App(props) {
   const username = useField('text')
   const password = useField('password')
-  const [user, setUser] = useState(null)
   const title = useField('text')
   const author = useField('text')
   const url = useField('text')
@@ -36,7 +36,7 @@ function App(props) {
     try {
       const user = await loginService.login({ username: username.value, password: password.value })
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
-      setUser(user)
+      props.setUser(user)
       blogService.setToken(user.token)
       username.reset()
       username.reset()
@@ -49,7 +49,7 @@ function App(props) {
   const logoutHandler = (event) => {
     event.preventDefault()
     window.localStorage.removeItem('loggedUser')
-    setUser(null)
+    props.resetUser()
   }
 
   const blogCreateHandler = async (event) => {
@@ -104,14 +104,14 @@ function App(props) {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      props.setUser(user)
       blogService.setToken(user.token)
     }
   }, [])
 
   return (
     <div className="App">
-      {user === null ?
+      {props.user === null ?
         <LoginForm
           username={username}
           password={password}
@@ -120,7 +120,6 @@ function App(props) {
         : <div>
           <h1>Blogs</h1>
           <UserInfo
-            username={user.username}
             logoutHandler={logoutHandler}
           />
           <Togglable buttonlabel="Add a blog">
@@ -132,7 +131,6 @@ function App(props) {
             />
           </Togglable>
           <BlogList
-            username={user.username}
             logoutHandler={logoutHandler}
             blogLikeHandler={blogLikeHandler}
             blogDeleteHandler={blogDeleteHandler}
@@ -145,7 +143,8 @@ function App(props) {
 
 const mapStateToProps = (state) => {
   return {
-    blogs: state.blogs
+    blogs: state.blogs,
+    user: state.user
   }
 }
 
@@ -155,6 +154,8 @@ const mapDispatchToProps = {
   initializeBlogs,
   likeBlog,
   deleteBlog,
+  setUser,
+  resetUser,
 }
 
 const connectedApp = connect(mapStateToProps, mapDispatchToProps)(App)

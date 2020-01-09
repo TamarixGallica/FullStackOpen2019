@@ -1,5 +1,6 @@
 import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
+import { fireEvent } from '@testing-library/react'
+import { renderWithRedux } from '../testhelper'
 import Blog from './Blog'
 
 const blog = {
@@ -13,14 +14,21 @@ const blog = {
   }
 }
 
+const user = {
+  token: 'token',
+  username: 'Brian Kottarainen',
+  name: 'Brian Kottarainen',
+}
+
 test('details are not visible by default', () => {
-  const component = render(
+
+
+  const component = renderWithRedux(
     <Blog
       blog={blog}
-      username='Brian Kottarainen'
       blogLikeHandler={function () {}}
       blogDeleteHandler={function () {}}
-    />
+    />, { initialState: { user } }
   )
 
   expect(component.container).toHaveTextContent(
@@ -33,13 +41,13 @@ test('details are not visible by default', () => {
 })
 
 test('details are shown after clicking on title row', async () => {
-  const component = render(
+  const component = renderWithRedux(
     <Blog
       blog={blog}
       username='Brian Kottarainen'
       blogLikeHandler={function () {}}
       blogDeleteHandler={function () {}}
-    />
+    />, { initialState: { user } }
   )
 
   const link = component.getByText(`${blog.title} ${blog.author}`)

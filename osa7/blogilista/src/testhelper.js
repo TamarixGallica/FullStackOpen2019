@@ -1,9 +1,7 @@
-
 import React from 'react'
-import ReactDOM from 'react-dom'
 import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
-import App from './App'
+import { render } from '@testing-library/react'
 import statusMessageReducer from './reducers/statusMessageReducer'
 import blogReducer from './reducers/blogReducer'
 import userReducer from './reducers/userReducer'
@@ -14,11 +12,15 @@ const reducer = combineReducers({
   user: userReducer,
 })
 
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+const renderWithRedux = (
+  app,
+  { initialState, store = createStore(reducer, initialState) } = {}
+) => {
+  return {
+    ...render(<Provider store={store}>{app}</Provider>),
+    store,
+  }
+}
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-)
+
+export { renderWithRedux }
