@@ -10,6 +10,7 @@ import UserInfo from './components/UserInfo'
 import Togglable from './components/Togglable'
 import Users from './components/Users'
 import User from './components/User'
+import SingleBlog from './components/SingleBlog'
 import blogService from './services/blogs'
 import userService from './services/users'
 import loginService from './services/login'
@@ -152,13 +153,14 @@ function App(props) {
             <Route exact path="/" render={() =>
               <BlogList
                 logoutHandler={logoutHandler}
-                blogLikeHandler={blogLikeHandler}
-                blogDeleteHandler={blogDeleteHandler}
               />
             } />
             <Route exact path="/users" render={() => <Users />} />
             <Route path="/users/:id" render={({ match }) =>
               <User user={props.users.find(user => user.id === match.params.id)} />
+            } />
+            <Route path="/blogs/:id" render={({ match }) =>
+              <SingleBlog blog={props.blogs.find(user => user.id === match.params.id)} blogLikeHandler={blogLikeHandler} blogDeleteHandler={blogDeleteHandler} />
             } />
 
           </div>

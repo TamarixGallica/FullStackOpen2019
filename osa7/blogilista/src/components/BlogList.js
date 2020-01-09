@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import Blog from './Blog'
+import BlogListItem from './BlogListItem'
 
 const BlogList = (props) => {
   return <div>
     <div>
-      {props.blogs.map(blog => <Blog username={props.username} blog={blog} blogLikeHandler={props.blogLikeHandler} blogDeleteHandler={props.blogDeleteHandler} key={blog.id} />)}
+      {props.blogs.map(blog => <BlogListItem username={props.username} blog={blog} blogLikeHandler={props.blogLikeHandler} blogDeleteHandler={props.blogDeleteHandler} key={blog.id} />)}
     </div>
   </div>
 }
