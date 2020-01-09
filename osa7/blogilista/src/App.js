@@ -9,6 +9,7 @@ import LoginForm from './components/LoginForm'
 import UserInfo from './components/UserInfo'
 import Togglable from './components/Togglable'
 import Users from './components/Users'
+import User from './components/User'
 import blogService from './services/blogs'
 import userService from './services/users'
 import loginService from './services/login'
@@ -156,6 +157,10 @@ function App(props) {
               />
             } />
             <Route exact path="/users" render={() => <Users />} />
+            <Route path="/users/:id" render={({ match }) =>
+              <User user={props.users.find(user => user.id === match.params.id)} />
+            } />
+
           </div>
         }
       </Router>

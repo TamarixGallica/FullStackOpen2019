@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
@@ -16,7 +17,7 @@ const Users = (props) => {
         <tbody>
           {_.map(props.users2, (user) =>
             <tr key={user.id}>
-              <td>{user.name}</td>
+              <td><Link to={`/users/${user.id}`}>{user.name}</Link></td>
               <td>{user.blogs.length}</td>
             </tr>
           )}
