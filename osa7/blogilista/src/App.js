@@ -1,16 +1,22 @@
 import React, { useEffect } from 'react'
+import { BrowserRouter as Router,
+  Route,
+} from 'react-router-dom'
 import { connect } from 'react-redux'
 import BlogList from './components/BlogList'
 import BlogCreation from './components/BlogCreation'
 import LoginForm from './components/LoginForm'
 import UserInfo from './components/UserInfo'
 import Togglable from './components/Togglable'
+import Users from './components/Users'
 import blogService from './services/blogs'
+import userService from './services/users'
 import loginService from './services/login'
 import { useField } from './hooks'
 import { createStatusMessage } from './reducers/statusMessageReducer'
 import { createBlog, initializeBlogs, likeBlog, deleteBlog } from './reducers/blogReducer'
-import { setUser, resetUser } from './reducers/userReducer'
+import { setUserToken, resetUserToken } from './reducers/userTokenReducer'
+import { initializeUsers } from './reducers/userReducer'
 
 function App(props) {
   const username = useField('text')
@@ -19,10 +25,17 @@ function App(props) {
   const author = useField('text')
   const url = useField('text')
 
-  const hook = () => {
+  const blogHook = () => {
     blogService.getAll()
       .then(response => {
         props.initializeBlogs(response)
+      })
+  }
+
+  const userHook = () => {
+    userService.getAll()
+      .then(response => {
+        props.initializeUsers(response)
       })
   }
 
@@ -36,7 +49,7 @@ function App(props) {
     try {
       const user = await loginService.login({ username: username.value, password: password.value })
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
-      props.setUser(user)
+      props.setUserToken(user)
       blogService.setToken(user.token)
       username.reset()
       username.reset()
@@ -49,7 +62,7 @@ function App(props) {
   const logoutHandler = (event) => {
     event.preventDefault()
     window.localStorage.removeItem('loggedUser')
-    props.resetUser()
+    props.resetUserToken()
   }
 
   const blogCreateHandler = async (event) => {
@@ -98,45 +111,54 @@ function App(props) {
     }
   }
 
-  useEffect(hook, [])
+  useEffect(blogHook, [])
+
+  useEffect(userHook, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      props.setUser(user)
+      props.setUserToken(user)
       blogService.setToken(user.token)
     }
   }, [])
 
   return (
     <div className="App">
-      {props.user === null ?
-        <LoginForm
-          username={username}
-          password={password}
-          loginHandler={loginHandler}
-        />
-        : <div>
-          <h1>Blogs</h1>
-          <UserInfo
-            logoutHandler={logoutHandler}
+      <Router>
+        {props.userToken === null ?
+          <LoginForm
+            username={username}
+            password={password}
+            loginHandler={loginHandler}
           />
-          <Togglable buttonlabel="Add a blog">
-            <BlogCreation
-              author={author}
-              title={title}
-              url={url}
-              submitHandler={blogCreateHandler}
+          : <div>
+            <h1>Blogs</h1>
+            <UserInfo
+              logoutHandler={logoutHandler}
             />
-          </Togglable>
-          <BlogList
-            logoutHandler={logoutHandler}
-            blogLikeHandler={blogLikeHandler}
-            blogDeleteHandler={blogDeleteHandler}
-          />
-        </div>
-      }
+            <Route exact path="/" render={() =>
+              <Togglable buttonlabel="Add a blog">
+                <BlogCreation
+                  author={author}
+                  title={title}
+                  url={url}
+                  submitHandler={blogCreateHandler}
+                />
+              </Togglable>
+            } />
+            <Route exact path="/" render={() =>
+              <BlogList
+                logoutHandler={logoutHandler}
+                blogLikeHandler={blogLikeHandler}
+                blogDeleteHandler={blogDeleteHandler}
+              />
+            } />
+            <Route exact path="/users" render={() => <Users />} />
+          </div>
+        }
+      </Router>
     </div>
   )
 }
@@ -144,7 +166,8 @@ function App(props) {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
-    user: state.user
+    userToken: state.userToken,
+    users: state.users
   }
 }
 
@@ -154,8 +177,9 @@ const mapDispatchToProps = {
   initializeBlogs,
   likeBlog,
   deleteBlog,
-  setUser,
-  resetUser,
+  setUserToken,
+  resetUserToken,
+  initializeUsers,
 }
 
 const connectedApp = connect(mapStateToProps, mapDispatchToProps)(App)

@@ -1,26 +1,33 @@
-const setUser = (user) => {
+import _ from 'lodash'
+
+const initializeUsers = (users) => {
   return {
-    type: 'set_user',
-    data: user
+    type: 'initialize_users',
+    data: users
   }
 }
 
-const resetUser = () => {
-  return {
-    type: 'reset_user'
-  }
+const addBlogForUser = (user, blog) => {
+  const blogs = user.blogs.concat(_.omit(blog, 'user'))
+  return Object.assign({}, user, { blogs: blogs })
 }
 
-const reducer = (state = null, action) => {
+const removeBlogFromUser = (user, blog) => {
+  return Object.assign({}, _.omit(user, 'blogs'), { blogs: user.blogs.filter(x => x.id !== blog.id) })
+}
+
+const reducer = ( state = [], action) => {
   switch (action.type) {
-  case 'set_user':
+  case 'add_blog':
+    return state.map(user => user.id === action.data.user.id ? addBlogForUser(user, action.data) : user)
+  case 'delete_blog':
+    return state.map(user => user.id === action.data.user.id ? removeBlogFromUser(user, action.data) : user)
+  case 'initialize_users':
     return action.data
-  case 'reset_user':
-    return null
   default:
     return state
   }
 }
 
-export { setUser, resetUser }
+export { initializeUsers }
 export default reducer

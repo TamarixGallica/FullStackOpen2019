@@ -1,5 +1,4 @@
 const createBlog = (blog) => {
-  console.log('createBlog', blog)
   return {
     type: 'add_blog',
     data: blog

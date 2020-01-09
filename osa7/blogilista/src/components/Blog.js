@@ -31,7 +31,7 @@ const Blog = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    username: state.user.username
+    username: state.userToken.username
   }
 }
 

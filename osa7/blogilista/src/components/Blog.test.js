@@ -14,7 +14,7 @@ const blog = {
   }
 }
 
-const user = {
+const userToken = {
   token: 'token',
   username: 'Brian Kottarainen',
   name: 'Brian Kottarainen',
@@ -28,7 +28,7 @@ test('details are not visible by default', () => {
       blog={blog}
       blogLikeHandler={function () {}}
       blogDeleteHandler={function () {}}
-    />, { initialState: { user } }
+    />, { initialState: { userToken } }
   )
 
   expect(component.container).toHaveTextContent(
@@ -47,7 +47,7 @@ test('details are shown after clicking on title row', async () => {
       username='Brian Kottarainen'
       blogLikeHandler={function () {}}
       blogDeleteHandler={function () {}}
-    />, { initialState: { user } }
+    />, { initialState: { userToken } }
   )
 
   const link = component.getByText(`${blog.title} ${blog.author}`)
