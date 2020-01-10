@@ -10,11 +10,11 @@ const LoginForm = (props) => {
   const { reset: r2, ...newPassword } = props.password
   return (
     <div>
-      <Header as='h1'>Login to application</Header>
+      <Header as='h1' data-cy="loginform-header">Login to application</Header>
       <Form>
-          username <Input {...newUsername} /><br />
-          password <Input {...newPassword} /><br />
-        <Button primary onClick={props.loginHandler}>Login</Button>
+          username <Input data-cy="loginform-username" {...newUsername} /><br />
+          password <Input data-cy="loginform-password" {...newPassword} /><br />
+        <Button primary data-cy="loginform-submit" onClick={props.loginHandler}>Login</Button>
         { props.message && <ToastMessage />}
       </Form>
     </div>
