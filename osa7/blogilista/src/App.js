@@ -5,8 +5,8 @@ import { BrowserRouter as Router,
 import { connect } from 'react-redux'
 import BlogList from './components/BlogList'
 import BlogCreation from './components/BlogCreation'
+import Navigation from './components/Navigation'
 import LoginForm from './components/LoginForm'
-import UserInfo from './components/UserInfo'
 import Togglable from './components/Togglable'
 import Users from './components/Users'
 import User from './components/User'
@@ -136,10 +136,8 @@ function App(props) {
             loginHandler={loginHandler}
           />
           : <div>
+            <Navigation logoutHandler={logoutHandler} />
             <h1>Blogs</h1>
-            <UserInfo
-              logoutHandler={logoutHandler}
-            />
             <Route exact path="/" render={() =>
               <Togglable buttonlabel="Add a blog">
                 <BlogCreation
