@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import CommentForm from './CommentForm'
 
 const SingleBlog = (props) => {
   const blog = props.blog
@@ -23,6 +24,7 @@ const SingleBlog = (props) => {
           <p><input type="button" value="Remove" data-blog-id={blog.id} onClick={props.blogDeleteHandler}/></p>
       }
       <h3>Comments</h3>
+      <CommentForm blog={blog} />
       <ul>
         {
           blog.comments.map(comment => (<li key={comment}>{comment}</li>))

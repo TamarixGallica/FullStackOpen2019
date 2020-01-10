@@ -31,6 +31,11 @@ const likeBlog = (blogId, blogData) => {
 
 }
 
+const addCommentToBlog = (blog, comment) => {
+  const request = axios.post(`${baseUrl}/${blog.id}/comments`, comment)
+  return request.then(response => response.data)
+}
+
 const deleteBlog = (blogId) => {
   const config = {
     headers: { Authorization: token },
@@ -40,4 +45,4 @@ const deleteBlog = (blogId) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, addBlog, likeBlog, deleteBlog, setToken }
+export default { getAll, addBlog, likeBlog, deleteBlog, addCommentToBlog, setToken }
