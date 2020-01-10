@@ -18,8 +18,8 @@ const Users = (props) => {
         <Table.Body>
           {_.map(props.users2, (user) =>
             <Table.Row key={user.id}>
-              <Table.Cell><Link to={`/users/${user.id}`}>{user.name}</Link></Table.Cell>
-              <Table.Cell>{user.blogs.length}</Table.Cell>
+              <Table.Cell data-cy="users-user"><Link to={`/users/${user.id}`}>{user.name}</Link></Table.Cell>
+              <Table.Cell data-cy="users-blogcount">{user.blogs.length}</Table.Cell>
             </Table.Row>
           )}
         </Table.Body>

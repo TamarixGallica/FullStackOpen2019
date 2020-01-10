@@ -12,12 +12,12 @@ const BlogCreation = ({ title, author, url, submitHandler }) => {
   const { reset: r3, ...newUrl } = url
   return (
     <div>
-      <Header as='h2'>Create new</Header>
+      <Header as='h2' data-cy="blogcreation-header">Create new</Header>
       <Form>
-          title: <Input {...newTitle} /><br />
-          author: <Input {...newAuthor} /><br />
-          url: <Input {...newUrl} /><br />
-        <Button primary onClick={submitHandler}>Create</Button>
+          title: <Input data-cy="blogcreation-title" {...newTitle} /><br />
+          author: <Input data-cy="blogcreation-author" {...newAuthor} /><br />
+          url: <Input data-cy="blogcreation-url" {...newUrl} /><br />
+        <Button data-cy="blogcreation-submit" primary onClick={submitHandler}>Create</Button>
         <ToastMessage />
       </Form>
     </div>
