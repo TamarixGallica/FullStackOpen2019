@@ -1,0 +1,1 @@
+Käynnistyksessä on annettava pakollinen parametri REACT_APP_API_ROOT, joka määrittää APIn juuren. Kehityspalvelimen voi käynnistää esim. komennolla `REACT_APP_API_ROOT=http://localhost:3003/api npm run start:dev-server`
