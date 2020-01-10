@@ -3,6 +3,7 @@ import { BrowserRouter as Router,
   Route,
 } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Container, Header } from 'semantic-ui-react'
 import BlogList from './components/BlogList'
 import BlogCreation from './components/BlogCreation'
 import Navigation from './components/Navigation'
@@ -54,7 +55,7 @@ function App(props) {
       props.setUserToken(user)
       blogService.setToken(user.token)
       username.reset()
-      username.reset()
+      password.reset()
     } catch (ex) {
       console.log(ex)
       displayMessage('error', 'Login failed due to invalid credentials')
@@ -129,40 +130,42 @@ function App(props) {
   return (
     <div className="App">
       <Router>
-        {props.userToken === null ?
-          <LoginForm
-            username={username}
-            password={password}
-            loginHandler={loginHandler}
-          />
-          : <div>
-            <Navigation logoutHandler={logoutHandler} />
-            <h1>Blogs</h1>
-            <Route exact path="/" render={() =>
-              <Togglable buttonlabel="Add a blog">
-                <BlogCreation
-                  author={author}
-                  title={title}
-                  url={url}
-                  submitHandler={blogCreateHandler}
+        <Container>
+          {props.userToken === null ?
+            <LoginForm
+              username={username}
+              password={password}
+              loginHandler={loginHandler}
+            />
+            : <div>
+              <Navigation logoutHandler={logoutHandler} />
+              <Header as='h1'>Blogs</Header>
+              <Route exact path="/" render={() =>
+                <Togglable buttonlabel="Add a blog">
+                  <BlogCreation
+                    author={author}
+                    title={title}
+                    url={url}
+                    submitHandler={blogCreateHandler}
+                  />
+                </Togglable>
+              } />
+              <Route exact path="/" render={() =>
+                <BlogList
+                  logoutHandler={logoutHandler}
                 />
-              </Togglable>
-            } />
-            <Route exact path="/" render={() =>
-              <BlogList
-                logoutHandler={logoutHandler}
-              />
-            } />
-            <Route exact path="/users" render={() => <Users />} />
-            <Route path="/users/:id" render={({ match }) =>
-              <User user={props.users.find(user => user.id === match.params.id)} />
-            } />
-            <Route path="/blogs/:id" render={({ match }) =>
-              <SingleBlog blog={props.blogs.find(user => user.id === match.params.id)} blogLikeHandler={blogLikeHandler} blogDeleteHandler={blogDeleteHandler} />
-            } />
+              } />
+              <Route exact path="/users" render={() => <Users />} />
+              <Route path="/users/:id" render={({ match }) =>
+                <User user={props.users.find(user => user.id === match.params.id)} />
+              } />
+              <Route path="/blogs/:id" render={({ match }) =>
+                <SingleBlog blog={props.blogs.find(user => user.id === match.params.id)} blogLikeHandler={blogLikeHandler} blogDeleteHandler={blogDeleteHandler} />
+              } />
 
-          </div>
-        }
+            </div>
+          }
+        </Container>
       </Router>
     </div>
   )

@@ -1,18 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Table } from 'semantic-ui-react'
 
 const BlogListItem = (props) => {
-  const style = {
-    border: '1px solid black',
-    padding: '0px 3px'
-  }
-
   const blog = props.blog
 
   return (
-    <div style={style}>
-      <p><Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link></p>
-    </div>
+    <Table.Row>
+      <Table.Cell>
+        <Link to={`/blogs/${blog.id}`}>{blog.title} {blog.author}</Link>
+      </Table.Cell>
+    </Table.Row>
   )
 }
 

@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Button } from 'semantic-ui-react'
+
 
 const UserInfo = (props) => {
   return (
-    <span>{props.username} logged in <input type="submit" value="logout" onClick={props.logoutHandler} /></span>
+    <span>{props.username} logged in <Button onClick={props.logoutHandler}>logout</Button></span>
   )
 }
 

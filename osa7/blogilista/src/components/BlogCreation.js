@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Button, Form, Header, Input } from 'semantic-ui-react'
 import ToastMessage from './ToastMessage'
 
 const BlogCreation = ({ title, author, url, submitHandler }) => {
@@ -11,16 +12,14 @@ const BlogCreation = ({ title, author, url, submitHandler }) => {
   const { reset: r3, ...newUrl } = url
   return (
     <div>
-      <h2>Create new</h2>
-      <form>
-        <p>
-          title: <input {...newTitle} /><br />
-          author: <input {...newAuthor} /><br />
-          url: <input {...newUrl} /><br />
-          <input type="submit" value="Create" onClick={submitHandler} />
-        </p>
+      <Header as='h2'>Create new</Header>
+      <Form>
+          title: <Input {...newTitle} /><br />
+          author: <Input {...newAuthor} /><br />
+          url: <Input {...newUrl} /><br />
+        <Button primary onClick={submitHandler}>Create</Button>
         <ToastMessage />
-      </form>
+      </Form>
     </div>
   )
 }

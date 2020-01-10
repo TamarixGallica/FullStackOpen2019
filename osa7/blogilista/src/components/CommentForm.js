@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { Button, Input } from 'semantic-ui-react'
 import blogService from '../services/blogs'
 import { addComment } from '../reducers/blogReducer'
 
@@ -18,8 +19,8 @@ const CommentForm = (props) => {
 
   return (
     <div>
-      <input type="text" value={comment} onChange={commentHandler} />
-      <input type="button" value="Add comment" onClick={commentAddHandler} />
+      <Input type="text" value={comment} onChange={commentHandler} placeholder="Comment" />
+      <Button primary onClick={commentAddHandler}>Add comment</Button>
     </div>
   )
 }
