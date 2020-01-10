@@ -8,6 +8,10 @@ const SingleBlog = (props) => {
     return null
   }
 
+  console.log(blog.comments)
+
+  blog.comments.forEach(comment => console.log(comment))
+
   return (
     <div>
       <h2>{blog.title} {blog.author}</h2>
@@ -18,6 +22,12 @@ const SingleBlog = (props) => {
         props.username === blog.user.username &&
           <p><input type="button" value="Remove" data-blog-id={blog.id} onClick={props.blogDeleteHandler}/></p>
       }
+      <h3>Comments</h3>
+      <ul>
+        {
+          blog.comments.map(comment => (<li key={comment}>{comment}</li>))
+        }
+      </ul>
     </div>
   )
 }
